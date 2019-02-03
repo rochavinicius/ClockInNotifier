@@ -194,9 +194,9 @@ namespace ClockInNotifier
             //this.DataGridList.Items.Add(new DateComponent()
             //{
             //    // for five minutes left test
-            //    HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
+            //    //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
             //    // for one minute left test
-            //    //HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
+            //    HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
             //    bitmap = Properties.Resources.DeleteIcon
             //});
             //this.DataGridList.Items.Add(new DateComponent()
@@ -259,7 +259,7 @@ namespace ClockInNotifier
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
             }
-            else if (this.DataGridList.Items.Count == 1 || this.DataGridList.Items.Count == 3)
+            else if (this.DataGridList.Items.Count == 3)
             {
                 var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DateComponent).HourDisplay);
                 var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DateComponent).HourDisplay);
@@ -274,13 +274,17 @@ namespace ClockInNotifier
                 {
                     this.fiveMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
+                    this.notifyIcon.Visible = true;
                     this.notifyIcon.ShowBalloonTip(1000);
+                    this.notifyIcon.Visible = false;
                 }
                 else if (diff < 2 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     this.oneMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "1 minute to register end of journey.";
+                    this.notifyIcon.Visible = true;
                     this.notifyIcon.ShowBalloonTip(1000);
+                    this.notifyIcon.Visible = false;
                 }
             }
         }
