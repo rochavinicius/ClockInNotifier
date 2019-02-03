@@ -1,0 +1,15 @@
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Debug\ClockInNotifier.exe.config
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Debug\ClockInNotifier.exe
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Debug\ClockInNotifier.pdb
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.csprojAssemblyReference.cache
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\MainWindow.g.cs
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\App.g.cs
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier_MarkupCompile.cache
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier_MarkupCompile.lref
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\MainWindow.baml
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.g.resources
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.Properties.Resources.resources
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.csproj.GenerateResource.cache
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.csproj.CoreCompileInputs.cache
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.exe
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Debug\ClockInNotifier.pdb
