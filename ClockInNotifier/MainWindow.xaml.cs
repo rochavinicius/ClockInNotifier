@@ -19,6 +19,13 @@ namespace ClockInNotifier
         private DispatcherTimer timer;
         private string invalidErrorMessage;
 
+        private const Int32 TICK_INTERVAL = 2;
+
+        private bool fiveMinNotificationEndShowed = false;
+        private bool oneMinNotificationEndShowed = false;
+        private bool fiveMinNotificationLunchShowed = false;
+        private bool oneMinNotificationLunchShowed = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +37,7 @@ namespace ClockInNotifier
 
             this.menuItem1.Index = 0;
             this.menuItem1.Text = "Exit";
-            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            this.menuItem1.Click += new System.EventHandler(this.OnQuitClick);
 
             this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
             {
@@ -42,8 +49,7 @@ namespace ClockInNotifier
             this.notifyIcon.Text = "Clock In Notifier";
             this.notifyIcon.ContextMenu = this.contextMenu;
             this.notifyIcon.Visible = true;
-            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnNotifyIconClick);
 
             dataComponent = new DataComponent()
             {
@@ -76,8 +82,13 @@ namespace ClockInNotifier
 
                 this.dataComponent.EndShiftTime = thirdPoint.AddHours(6 - timeDone).ToShortTimeString();
             }
+            else
+            {
+                this.dataComponent.EndShiftTime = String.Empty;
+            }
         }
 
+        #region Button Events
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DateTime dt = DateTime.Parse(dataComponent.HourDisplay);
@@ -102,7 +113,7 @@ namespace ClockInNotifier
             dataComponent.HourDisplay = dt.ToShortTimeString();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void AddHourRestry(object sender, RoutedEventArgs e)
         {
             if (!CanAddNewResgitry())
             {
@@ -126,6 +137,26 @@ namespace ClockInNotifier
             this.CalculateTimeToLeave();
         }
 
+        private void RemoveRegistry(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show
+            (
+                "Are you sure about that?",
+                "Delete Hour Registry",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
+                this.CalculateTimeToLeave();
+            }
+        }
+        #endregion
+
+        #region Validation
         private bool CanAddNewResgitry()
         {
             if (this.DataGridList.Items.Count == 4)
@@ -151,25 +182,9 @@ namespace ClockInNotifier
             }
             return true;
         }
+        #endregion
 
-        private void DataGridCell_GotFocus(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = System.Windows.MessageBox.Show
-            (
-                "Are you sure about that?",
-                "Delete Hour Registry",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No
-            );
-
-            if (result == MessageBoxResult.Yes)
-            {
-                DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
-                this.CalculateTimeToLeave();
-            }
-        }
-
+        #region Handle Minimize, Open and Close Events
         private void OnStateChanged(object sender, EventArgs e)
         {
             if (WindowState.Minimized == this.WindowState)
@@ -184,7 +199,7 @@ namespace ClockInNotifier
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick
+        private void OnNotifyIconClick
                     (
                         object sender,
                         System.Windows.Forms.MouseEventArgs e
@@ -197,7 +212,7 @@ namespace ClockInNotifier
             }
         }
 
-        private void menuItem1_Click(object sender, EventArgs e)
+        private void OnQuitClick(object sender, EventArgs e)
         {
             this.close = true;
             this.Close();
@@ -213,39 +228,37 @@ namespace ClockInNotifier
                 this.Hide();
             }
         }
+        #endregion
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                // for five minutes left test
-                //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
-                // for one minute left test
-                HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    // for five minutes left test
+            //    //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
+            //    // for one minute left test
+            //    HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
 
             this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromSeconds(2);
+            this.timer.Interval = TimeSpan.FromSeconds(TICK_INTERVAL);
             this.timer.Tick += new EventHandler(this.Timer_Tick);
             this.timer.IsEnabled = true;
         }
 
-        private bool fiveMinNotificationEndShowed = false;
-        private bool oneMinNotificationEndShowed = false;
-        private bool fiveMinNotificationLunchShowed = false;
-        private bool oneMinNotificationLunchShowed = false;
 
+        #region Async Thread That Runs The Notification
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (this.DataGridList.Items.Count == 2)
@@ -309,5 +322,6 @@ namespace ClockInNotifier
                 }
             }
         }
+        #endregion
     }
 }
