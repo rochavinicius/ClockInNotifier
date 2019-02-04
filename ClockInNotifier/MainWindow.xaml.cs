@@ -11,7 +11,7 @@ namespace ClockInNotifier
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DateComponent hourDisplay;
+        private DataComponent dataComponent;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenu contextMenu;
         private System.Windows.Forms.MenuItem menuItem1;
@@ -41,19 +41,46 @@ namespace ClockInNotifier
             this.notifyIcon.Icon = Properties.Resources.ClockIcon;
             this.notifyIcon.Text = "Clock In Notifier";
             this.notifyIcon.ContextMenu = this.contextMenu;
+            this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
 
 
-            hourDisplay = new DateComponent()
+            dataComponent = new DataComponent()
             {
                 HourDisplay = DateTime.Now.ToShortTimeString()
             };
-            DataContext = hourDisplay;
+            this.CalculateTimeToLeave();
+            DataContext = dataComponent;
+        }
+
+        private void CalculateTimeToLeave()
+        {
+            if (this.DataGridList.Items.Count == 0)
+            {
+                this.dataComponent.EndShiftTime = String.Empty;
+            }
+            else if (this.DataGridList.Items.Count == 1 || this.DataGridList.Items.Count == 2)
+            {
+                var entryTime = 
+                    DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
+                this.dataComponent.EndShiftTime = entryTime.AddHours(6).ToShortTimeString();
+            }
+            else if (this.DataGridList.Items.Count == 3)
+            {
+                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
+                var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
+                var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
+                var diffThirdFirst = thirdPoint - firstPoint;
+                var diffThirdSecond = thirdPoint - secondPoint;
+                var timeDone = (diffThirdFirst - diffThirdSecond).TotalHours;
+
+                this.dataComponent.EndShiftTime = thirdPoint.AddHours(6 - timeDone).ToShortTimeString();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DateTime dt = DateTime.Parse(hourDisplay.HourDisplay);
+            DateTime dt = DateTime.Parse(dataComponent.HourDisplay);
             string uid = ((System.Windows.Controls.Button)e.Source).Uid;
 
             switch (uid.ToUpper())
@@ -72,7 +99,7 @@ namespace ClockInNotifier
                     break;
             }
 
-            hourDisplay.HourDisplay = dt.ToShortTimeString();
+            dataComponent.HourDisplay = dt.ToShortTimeString();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -90,12 +117,13 @@ namespace ClockInNotifier
             }
             var txtTime = HourTextBlock.Text;
 
-            var newItem = new DateComponent()
+            var newItem = new DataComponent()
             {
                 HourDisplay = HourTextBlock.Text,
                 bitmap = Properties.Resources.DeleteIcon
             };
             DataGridList.Items.Add(newItem);
+            this.CalculateTimeToLeave();
         }
 
         private bool CanAddNewResgitry()
@@ -108,7 +136,7 @@ namespace ClockInNotifier
             if (this.DataGridList.Items.Count > 0)
             {
                 var lastItemIndex = this.DataGridList.Items.Count - 1;
-                var item1 = DateTime.Parse((this.DataGridList.Items[lastItemIndex] as DateComponent).HourDisplay);
+                var item1 = DateTime.Parse((this.DataGridList.Items[lastItemIndex] as DataComponent).HourDisplay);
                 var newItem = DateTime.Parse(HourTextBlock.Text);
                 if (item1 == newItem || item1 > newItem)
                 {
@@ -138,6 +166,7 @@ namespace ClockInNotifier
             if (result == MessageBoxResult.Yes)
             {
                 DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
+                this.CalculateTimeToLeave();
             }
         }
 
@@ -145,14 +174,12 @@ namespace ClockInNotifier
         {
             if (WindowState.Minimized == this.WindowState)
             {
-                this.notifyIcon.Visible = true;
                 this.notifyIcon.BalloonTipText = "Clock In Notifier is still running in background.";
                 this.notifyIcon.ShowBalloonTip(1000);
                 this.Hide();
             }
             else if (WindowState.Normal == this.WindowState)
             {
-                this.notifyIcon.Visible = false;
                 this.Show();
             }
         }
@@ -165,7 +192,6 @@ namespace ClockInNotifier
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.notifyIcon.Visible = false;
                 this.Show();
                 this.WindowState = WindowState.Normal;
             }
@@ -182,7 +208,6 @@ namespace ClockInNotifier
             if (!this.close)
             {
                 e.Cancel = true;
-                this.notifyIcon.Visible = true;
                 this.notifyIcon.BalloonTipText = "Clock In Notifier is still running in background.";
                 this.notifyIcon.ShowBalloonTip(1000);
                 this.Hide();
@@ -191,24 +216,24 @@ namespace ClockInNotifier
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //this.DataGridList.Items.Add(new DateComponent()
-            //{
-            //    // for five minutes left test
-            //    //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
-            //    // for one minute left test
-            //    HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
-            //this.DataGridList.Items.Add(new DateComponent()
-            //{
-            //    HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
-            //this.DataGridList.Items.Add(new DateComponent()
-            //{
-            //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                // for five minutes left test
+                //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
+                // for one minute left test
+                HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
 
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromSeconds(2);
@@ -225,7 +250,7 @@ namespace ClockInNotifier
         {
             if (this.DataGridList.Items.Count == 2)
             {
-                var time = DateTime.Parse((this.DataGridList.Items[1] as DateComponent).HourDisplay);
+                var time = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
                 var diff = time.AddHours(1).Subtract(time).TotalMinutes;
                 if (diff < 6 && diff > 4 && !fiveMinNotificationLunchShowed)
                 {
@@ -242,7 +267,7 @@ namespace ClockInNotifier
             }
             else if (this.DataGridList.Items.Count == 1)
             {
-                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DateComponent).HourDisplay);
+                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
                 var x = firstPoint.AddHours(6).Subtract(DateTime.Now).TotalMinutes;
                 var diff = DateTime.Now.Subtract(firstPoint).TotalMinutes;
 
@@ -261,11 +286,11 @@ namespace ClockInNotifier
             }
             else if (this.DataGridList.Items.Count == 3)
             {
-                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DateComponent).HourDisplay);
-                var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DateComponent).HourDisplay);
+                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
+                var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
                 var minutesDone = secondPoint.Subtract(firstPoint).TotalMinutes;
 
-                var thirdPoint = DateTime.Parse((this.DataGridList.Items[1] as DateComponent).HourDisplay);
+                var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
 
                 var diff = DateTime.Now.Subtract(thirdPoint).TotalMinutes;
                 diff = diff - minutesDone;
@@ -274,17 +299,13 @@ namespace ClockInNotifier
                 {
                     this.fiveMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
-                    this.notifyIcon.Visible = true;
                     this.notifyIcon.ShowBalloonTip(1000);
-                    this.notifyIcon.Visible = false;
                 }
                 else if (diff < 2 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     this.oneMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "1 minute to register end of journey.";
-                    this.notifyIcon.Visible = true;
                     this.notifyIcon.ShowBalloonTip(1000);
-                    this.notifyIcon.Visible = false;
                 }
             }
         }

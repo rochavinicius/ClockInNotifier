@@ -54,6 +54,17 @@
 
         </DataGrid>
 
+        <StackPanel Margin="60, 100, 520, 220">
+            <TextBlock FontSize="20" FontWeight="ExtraBold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
+                <TextBlock>Base shift time: </TextBlock>
+                <TextBlock Text="{Binding BaseShiftTime}"></TextBlock>
+            </TextBlock>
+            <TextBlock FontSize="20" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Stretch" VerticalAlignment="Top" x:Name="endShiftTimeTextBlock">
+                <TextBlock>Time to leave:  </TextBlock>
+                <TextBlock Text="{Binding EndShiftTime}"></TextBlock>
+            </TextBlock>
+        </StackPanel>
+
         <StackPanel Margin="350, 130, 350, 260">
             <TextBlock Text="{Binding HourDisplay}" FontSize="18" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="HourTextBlock" Height="31" />
         </StackPanel>
