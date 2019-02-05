@@ -11,7 +11,7 @@
         StateChanged="OnStateChanged"
         Title="Clock In Notifier" Background="Gray" Height="450" Width="800">
     <Grid>
-        <DataGrid SelectionMode="Single" x:Name="DataGridList" HorizontalAlignment="Left" Height="200" Margin="280,200,0,0" VerticalAlignment="Top" Width="250">
+        <DataGrid HeadersVisibility="Column" CanUserResizeRows="False" CanUserResizeColumns="False" SelectionMode="Single" x:Name="DataGridList" HorizontalAlignment="Left" Height="200" Margin="280,200,0,0" VerticalAlignment="Top" Width="250">
 
             <!-- Table Styles -->
             <DataGrid.Resources>
@@ -22,8 +22,7 @@
                     <Setter Property="BorderBrush" Value="Black" />
                 </Style>
                 <Style TargetType="{x:Type DataGridCell}">
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
                     <Style.Triggers>
                         <Trigger Property="DataGridCell.IsSelected" Value="True">
                             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -41,12 +40,18 @@
                 <DataGridTemplateColumn Header="Image" Width="*" IsReadOnly="True" CanUserResize="False" CanUserReorder="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" />
+                            <Image PreviewMouseLeftButtonUp="RemoveRegistry"  RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <EventSetter Event="PreviewMouseLeftButtonUp" Handler="RemoveRegistry" />
+                            <Style.Triggers>
+                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                 </DataGridTemplateColumn>
@@ -54,7 +59,7 @@
 
         </DataGrid>
 
-        <StackPanel Margin="60, 100, 520, 220">
+        <StackPanel Margin="30, 100, 515, 220">
             <TextBlock FontSize="20" FontWeight="ExtraBold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
                 <TextBlock>Base shift time: </TextBlock>
                 <TextBlock Text="{Binding BaseShiftTime}"></TextBlock>

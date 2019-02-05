@@ -55,7 +55,7 @@ namespace ClockInNotifier
             {
                 HourDisplay = DateTime.Now.ToShortTimeString()
             };
-            this.CalculateTimeToLeave();
+            
             DataContext = dataComponent;
         }
 
@@ -208,6 +208,7 @@ namespace ClockInNotifier
             if (e.Button == MouseButtons.Left)
             {
                 this.Show();
+                this.dataComponent.HourDisplay = DateTime.Now.ToShortTimeString();
                 this.WindowState = WindowState.Normal;
             }
         }
@@ -232,12 +233,15 @@ namespace ClockInNotifier
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            /* 
+             ####    TEST 6 HOURS SHIFT    ####
+            */
             //this.DataGridList.Items.Add(new DataComponent()
             //{
             //    // for five minutes left test
-            //    //HourDisplay = DateTime.Now.AddHours(-5.933).ToShortTimeString(),
+            //    HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
             //    // for one minute left test
-            //    HourDisplay = DateTime.Now.AddHours(-5.993).ToShortTimeString(),
+            //    //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(1).ToShortTimeString(),
             //    bitmap = Properties.Resources.DeleteIcon
             //});
             //this.DataGridList.Items.Add(new DataComponent()
@@ -250,6 +254,8 @@ namespace ClockInNotifier
             //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
             //    bitmap = Properties.Resources.DeleteIcon
             //});
+
+            this.CalculateTimeToLeave();
 
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromSeconds(TICK_INTERVAL);
@@ -269,11 +275,13 @@ namespace ClockInNotifier
                 {
                     this.fiveMinNotificationLunchShowed = true;
                     this.notifyIcon.BalloonTipText = "5 minutes to register back from lunch.";
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
                 else if (diff < 2 && diff > 0 && !oneMinNotificationLunchShowed)
                 {
                     this.oneMinNotificationLunchShowed = true;
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.BalloonTipText = "1 minute to register back from lunch.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
@@ -282,17 +290,19 @@ namespace ClockInNotifier
             {
                 var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
                 var x = firstPoint.AddHours(6).Subtract(DateTime.Now).TotalMinutes;
-                var diff = DateTime.Now.Subtract(firstPoint).TotalMinutes;
+                var diff = firstPoint.AddHours(6).Subtract(DateTime.Now).TotalMinutes;
 
                 if (diff < 6 && diff > 4 && !fiveMinNotificationEndShowed)
                 {
                     this.fiveMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
                 else if (diff < 2 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     this.oneMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.BalloonTipText = "1 minute to register end of journey.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
@@ -305,8 +315,7 @@ namespace ClockInNotifier
 
                 var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
 
-                var diff = DateTime.Now.Subtract(thirdPoint).TotalMinutes;
-                diff = diff - minutesDone;
+                var diff = thirdPoint.AddMinutes(360 - minutesDone).Subtract(DateTime.Now).TotalMinutes;
 
                 if (diff < 6 && diff > 4 && !fiveMinNotificationEndShowed)
                 {
