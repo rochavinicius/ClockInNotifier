@@ -185,20 +185,6 @@ namespace ClockInNotifier
         #endregion
 
         #region Handle Minimize, Open and Close Events
-        private void OnStateChanged(object sender, EventArgs e)
-        {
-            if (WindowState.Minimized == this.WindowState)
-            {
-                this.notifyIcon.BalloonTipText = "Clock In Notifier is still running in background.";
-                this.notifyIcon.ShowBalloonTip(1000);
-                this.Hide();
-            }
-            else if (WindowState.Normal == this.WindowState)
-            {
-                this.Show();
-            }
-        }
-
         private void OnNotifyIconClick
                     (
                         object sender,
@@ -207,9 +193,9 @@ namespace ClockInNotifier
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.Show();
                 this.dataComponent.HourDisplay = DateTime.Now.ToShortTimeString();
                 this.WindowState = WindowState.Normal;
+                this.Show();
             }
         }
 
@@ -332,5 +318,21 @@ namespace ClockInNotifier
             }
         }
         #endregion
+
+        private void BtnQuit_Click(object sender, RoutedEventArgs e)
+        {
+            //System.Windows.Application.Current.Shutdown();
+            this.Close();
+        }
+
+        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

@@ -4,7 +4,6 @@ D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\MainWindow.g.cs
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\App.g.cs
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier_MarkupCompile.cache
-D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier_MarkupCompile.lref
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\MainWindow.baml
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.g.resources
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.Properties.Resources.resources
@@ -12,3 +11,10 @@ D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.csproj.CoreCompileInputs.cache
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.exe
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.pdb
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignColors.dll
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignThemes.Wpf.dll
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignColors.pdb
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignThemes.Wpf.pdb
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignThemes.Wpf.xml
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.csprojAssemblyReference.cache
+D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.csproj.CopyComplete
