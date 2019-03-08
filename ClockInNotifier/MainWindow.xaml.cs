@@ -21,8 +21,13 @@ namespace ClockInNotifier
 
         private const Int32 TICK_INTERVAL = 2;
 
+        private bool fifteenMinNotificationEndShowed = false;
+        private bool tenMinNotificationEndShowed = false;
         private bool fiveMinNotificationEndShowed = false;
         private bool oneMinNotificationEndShowed = false;
+
+        private bool fifteenMinNotificationLunchShowed = false;
+        private bool tenMinNotificationLunchShowed = false;
         private bool fiveMinNotificationLunchShowed = false;
         private bool oneMinNotificationLunchShowed = false;
 
@@ -55,7 +60,7 @@ namespace ClockInNotifier
             {
                 HourDisplay = DateTime.Now.ToShortTimeString()
             };
-            
+
             DataContext = dataComponent;
         }
 
@@ -67,9 +72,9 @@ namespace ClockInNotifier
             }
             else if (this.DataGridList.Items.Count == 1 || this.DataGridList.Items.Count == 2)
             {
-                var entryTime = 
+                var entryTime =
                     DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                this.dataComponent.EndShiftTime = entryTime.AddHours(6).ToShortTimeString();
+                this.dataComponent.EndShiftTime = entryTime.AddHours(this.dataComponent.BaseShiftTime).ToShortTimeString();
             }
             else if (this.DataGridList.Items.Count == 3)
             {
@@ -80,7 +85,7 @@ namespace ClockInNotifier
                 var diffThirdSecond = thirdPoint - secondPoint;
                 var timeDone = (diffThirdFirst - diffThirdSecond).TotalHours;
 
-                this.dataComponent.EndShiftTime = thirdPoint.AddHours(6 - timeDone).ToShortTimeString();
+                this.dataComponent.EndShiftTime = thirdPoint.AddHours(this.dataComponent.BaseShiftTime - timeDone).ToShortTimeString();
             }
             else
             {
@@ -88,7 +93,7 @@ namespace ClockInNotifier
             }
         }
 
-        #region Button Events
+        #region Form Buttons Events
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DateTime dt = DateTime.Parse(dataComponent.HourDisplay);
@@ -153,6 +158,21 @@ namespace ClockInNotifier
                 DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
                 this.CalculateTimeToLeave();
             }
+        }
+
+        private void ResetSettings(object sender, RoutedEventArgs e)
+        {
+            this.fifteenMinNotificationEndShowed = false;
+            this.tenMinNotificationEndShowed = false;
+            this.fiveMinNotificationEndShowed = false;
+            this.oneMinNotificationEndShowed = false;
+            this.fifteenMinNotificationLunchShowed = false;
+            this.tenMinNotificationLunchShowed = false;
+            this.fiveMinNotificationLunchShowed = false;
+            this.oneMinNotificationLunchShowed = false;
+
+            this.DataGridList.Items.Clear();
+            this.dataComponent.EndShiftTime = String.Empty;
         }
         #endregion
 
@@ -222,24 +242,24 @@ namespace ClockInNotifier
             /* 
              ####    TEST 6 HOURS SHIFT    ####
             */
-            //this.DataGridList.Items.Add(new DataComponent()
-            //{
-            //    // for five minutes left test
-            //    HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
-            //    // for one minute left test
-            //    //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(1).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
-            //this.DataGridList.Items.Add(new DataComponent()
-            //{
-            //    HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
-            //this.DataGridList.Items.Add(new DataComponent()
-            //{
-            //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
-            //    bitmap = Properties.Resources.DeleteIcon
-            //});
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                // for five minutes left test
+                //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
+                // for one minute left test
+                HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(1).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
+            this.DataGridList.Items.Add(new DataComponent()
+            {
+                HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
+                bitmap = Properties.Resources.DeleteIcon
+            });
 
             this.CalculateTimeToLeave();
 
@@ -253,18 +273,35 @@ namespace ClockInNotifier
         #region Async Thread That Runs The Notification
         private void Timer_Tick(object sender, EventArgs e)
         {
+            DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
+
             if (this.DataGridList.Items.Count == 2)
             {
                 var time = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
-                var diff = time.AddHours(1).Subtract(time).TotalMinutes;
-                if (diff < 6 && diff > 4 && !fiveMinNotificationLunchShowed)
+                var diff = dt.Subtract(time).TotalMinutes;
+
+                if (diff <= 15 && diff > 10 && !fifteenMinNotificationLunchShowed)
+                {
+                    this.fifteenMinNotificationLunchShowed = true;
+                    this.notifyIcon.BalloonTipText = "5 minutes to register back from lunch.";
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 10 && diff > 5 && !tenMinNotificationLunchShowed)
+                {
+                    this.tenMinNotificationLunchShowed = true;
+                    this.notifyIcon.BalloonTipText = "5 minutes to register back from lunch.";
+                    this.notifyIcon.BalloonTipTitle = "Register your point";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 5 && diff > 1 && !fiveMinNotificationLunchShowed)
                 {
                     this.fiveMinNotificationLunchShowed = true;
                     this.notifyIcon.BalloonTipText = "5 minutes to register back from lunch.";
                     this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
-                else if (diff < 2 && diff > 0 && !oneMinNotificationLunchShowed)
+                else if (diff <= 1 && diff > 0 && !oneMinNotificationLunchShowed)
                 {
                     this.oneMinNotificationLunchShowed = true;
                     this.notifyIcon.BalloonTipTitle = "Register your point";
@@ -275,20 +312,29 @@ namespace ClockInNotifier
             else if (this.DataGridList.Items.Count == 1)
             {
                 var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                var x = firstPoint.AddHours(6).Subtract(DateTime.Now).TotalMinutes;
-                var diff = firstPoint.AddHours(6).Subtract(DateTime.Now).TotalMinutes;
+                var diff = firstPoint.AddHours(this.dataComponent.BaseShiftTime).Subtract(dt).TotalMinutes;
 
-                if (diff < 6 && diff > 4 && !fiveMinNotificationEndShowed)
+                if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
+                {
+                    this.fifteenMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipText = "15 minutes to register end of journey.";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 10 && diff > 5 && !tenMinNotificationEndShowed)
+                {
+                    this.tenMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipText = "10 minutes to register end of journey.";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 5 && diff > 1 && !fiveMinNotificationEndShowed)
                 {
                     this.fiveMinNotificationEndShowed = true;
-                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
-                else if (diff < 2 && diff > 0 && !oneMinNotificationEndShowed)
+                else if (diff <= 1 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     this.oneMinNotificationEndShowed = true;
-                    this.notifyIcon.BalloonTipTitle = "Register your point";
                     this.notifyIcon.BalloonTipText = "1 minute to register end of journey.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
@@ -301,15 +347,28 @@ namespace ClockInNotifier
 
                 var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
 
-                var diff = thirdPoint.AddMinutes(360 - minutesDone).Subtract(DateTime.Now).TotalMinutes;
-
-                if (diff < 6 && diff > 4 && !fiveMinNotificationEndShowed)
+                var diff = thirdPoint.AddMinutes(360 - minutesDone)
+                                    .Subtract(dt)
+                                    .TotalMinutes;
+                if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
+                {
+                    this.fifteenMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipText = "15 minutes to register end of journey.";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 10 && diff > 5 && !tenMinNotificationEndShowed)
+                {
+                    this.tenMinNotificationEndShowed = true;
+                    this.notifyIcon.BalloonTipText = "10 minutes to register end of journey.";
+                    this.notifyIcon.ShowBalloonTip(1000);
+                }
+                else if (diff <= 5 && diff > 1 && !fiveMinNotificationEndShowed)
                 {
                     this.fiveMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
-                else if (diff < 2 && diff > 0 && !oneMinNotificationEndShowed)
+                else if (diff <= 1 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     this.oneMinNotificationEndShowed = true;
                     this.notifyIcon.BalloonTipText = "1 minute to register end of journey.";
@@ -321,7 +380,6 @@ namespace ClockInNotifier
 
         private void BtnQuit_Click(object sender, RoutedEventArgs e)
         {
-            //System.Windows.Application.Current.Shutdown();
             this.Close();
         }
 
