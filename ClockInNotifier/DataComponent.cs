@@ -11,15 +11,6 @@ namespace ClockInNotifier
 {
     class DataComponent : INotifyPropertyChanged
     {
-        private const Int32 BASE_SHIFT_TIME = 6;
-        public Int32 BaseShiftTime
-        {
-            get
-            {
-                return BASE_SHIFT_TIME;
-            }
-        }
-
         private String endShiftTime;
         public String EndShiftTime
         {

@@ -11,6 +11,8 @@ namespace ClockInNotifier
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Double BASE_SHIFT_TIME = 6;
+
         private DataComponent dataComponent;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenu contextMenu;
@@ -66,26 +68,26 @@ namespace ClockInNotifier
 
         private void CalculateTimeToLeave()
         {
-            if (this.DataGridList.Items.Count == 0)
+            if (this.ListView.Items.Count == 0)
             {
                 this.dataComponent.EndShiftTime = String.Empty;
             }
-            else if (this.DataGridList.Items.Count == 1 || this.DataGridList.Items.Count == 2)
+            else if (this.ListView.Items.Count == 1 || this.ListView.Items.Count == 2)
             {
                 var entryTime =
-                    DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                this.dataComponent.EndShiftTime = entryTime.AddHours(this.dataComponent.BaseShiftTime).ToShortTimeString();
+                    DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
+                this.dataComponent.EndShiftTime = entryTime.AddHours(BASE_SHIFT_TIME).ToShortTimeString();
             }
-            else if (this.DataGridList.Items.Count == 3)
+            else if (this.ListView.Items.Count == 3)
             {
-                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
-                var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
+                var firstPoint = DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
+                var secondPoint = DateTime.Parse((this.ListView.Items[1] as DataComponent).HourDisplay);
+                var thirdPoint = DateTime.Parse((this.ListView.Items[2] as DataComponent).HourDisplay);
                 var diffThirdFirst = thirdPoint - firstPoint;
                 var diffThirdSecond = thirdPoint - secondPoint;
                 var timeDone = (diffThirdFirst - diffThirdSecond).TotalHours;
 
-                this.dataComponent.EndShiftTime = thirdPoint.AddHours(this.dataComponent.BaseShiftTime - timeDone).ToShortTimeString();
+                this.dataComponent.EndShiftTime = thirdPoint.AddHours(BASE_SHIFT_TIME - timeDone).ToShortTimeString();
             }
             else
             {
@@ -138,7 +140,8 @@ namespace ClockInNotifier
                 HourDisplay = HourTextBlock.Text,
                 bitmap = Properties.Resources.DeleteIcon
             };
-            DataGridList.Items.Add(newItem);
+            ListView.Items.Add(newItem);
+            //DataGridList.Items.Add(newItem);
             this.CalculateTimeToLeave();
         }
 
@@ -155,7 +158,8 @@ namespace ClockInNotifier
 
             if (result == MessageBoxResult.Yes)
             {
-                DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
+                ListView.Items.RemoveAt(ListView.SelectedIndex);
+                //DataGridList.Items.RemoveAt(DataGridList.SelectedIndex);
                 this.CalculateTimeToLeave();
             }
         }
@@ -171,7 +175,8 @@ namespace ClockInNotifier
             this.fiveMinNotificationLunchShowed = false;
             this.oneMinNotificationLunchShowed = false;
 
-            this.DataGridList.Items.Clear();
+            //this.DataGridList.Items.Clear();
+            ListView.Items.Clear();
             this.dataComponent.EndShiftTime = String.Empty;
         }
         #endregion
@@ -179,15 +184,15 @@ namespace ClockInNotifier
         #region Validation
         private bool CanAddNewResgitry()
         {
-            if (this.DataGridList.Items.Count == 4)
+            if (this.ListView.Items.Count == 4)
             {
                 this.invalidErrorMessage = "You can't add more than 4 registers.";
                 return false;
             }
-            if (this.DataGridList.Items.Count > 0)
+            if (this.ListView.Items.Count > 0)
             {
-                var lastItemIndex = this.DataGridList.Items.Count - 1;
-                var item1 = DateTime.Parse((this.DataGridList.Items[lastItemIndex] as DataComponent).HourDisplay);
+                var lastItemIndex = this.ListView.Items.Count - 1;
+                var item1 = DateTime.Parse((this.ListView.Items[lastItemIndex] as DataComponent).HourDisplay);
                 var newItem = DateTime.Parse(HourTextBlock.Text);
                 if (item1 == newItem || item1 > newItem)
                 {
@@ -239,27 +244,45 @@ namespace ClockInNotifier
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            //this.ListView.Items.Add(new DataComponent()
+            //{
+            //    // for five minutes left test
+            //    //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
+            //    // for one minute left test
+            //    HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(15).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.ListView.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.ListView.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
             /* 
              ####    TEST 6 HOURS SHIFT    ####
             */
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                // for five minutes left test
-                //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
-                // for one minute left test
-                HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(1).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
-            this.DataGridList.Items.Add(new DataComponent()
-            {
-                HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
-                bitmap = Properties.Resources.DeleteIcon
-            });
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    // for five minutes left test
+            //    //HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(5).ToShortTimeString(),
+            //    // for one minute left test
+            //    HourDisplay = DateTime.Now.AddHours(-7).AddMinutes(1).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-3).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
+            //this.DataGridList.Items.Add(new DataComponent()
+            //{
+            //    HourDisplay = DateTime.Now.AddHours(-2).ToShortTimeString(),
+            //    bitmap = Properties.Resources.DeleteIcon
+            //});
 
             this.CalculateTimeToLeave();
 
@@ -275,9 +298,9 @@ namespace ClockInNotifier
         {
             DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
 
-            if (this.DataGridList.Items.Count == 2)
+            if (this.ListView.Items.Count == 2)
             {
-                var time = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
+                var time = DateTime.Parse((this.ListView.Items[1] as DataComponent).HourDisplay);
                 var diff = dt.Subtract(time).TotalMinutes;
 
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationLunchShowed)
@@ -309,10 +332,10 @@ namespace ClockInNotifier
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
             }
-            else if (this.DataGridList.Items.Count == 1)
+            else if (this.ListView.Items.Count == 1)
             {
-                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                var diff = firstPoint.AddHours(this.dataComponent.BaseShiftTime).Subtract(dt).TotalMinutes;
+                var firstPoint = DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
+                var diff = firstPoint.AddHours(BASE_SHIFT_TIME).Subtract(dt).TotalMinutes;
 
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
                 {
@@ -339,13 +362,13 @@ namespace ClockInNotifier
                     this.notifyIcon.ShowBalloonTip(1000);
                 }
             }
-            else if (this.DataGridList.Items.Count == 3)
+            else if (this.ListView.Items.Count == 3)
             {
-                var firstPoint = DateTime.Parse((this.DataGridList.Items[0] as DataComponent).HourDisplay);
-                var secondPoint = DateTime.Parse((this.DataGridList.Items[1] as DataComponent).HourDisplay);
+                var firstPoint = DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
+                var secondPoint = DateTime.Parse((this.ListView.Items[1] as DataComponent).HourDisplay);
                 var minutesDone = secondPoint.Subtract(firstPoint).TotalMinutes;
 
-                var thirdPoint = DateTime.Parse((this.DataGridList.Items[2] as DataComponent).HourDisplay);
+                var thirdPoint = DateTime.Parse((this.ListView.Items[2] as DataComponent).HourDisplay);
 
                 var diff = thirdPoint.AddMinutes(360 - minutesDone)
                                     .Subtract(dt)
@@ -391,6 +414,19 @@ namespace ClockInNotifier
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void UpdateShiftTime(object sender, RoutedEventArgs e)
+        {
+            if ((bool)BtnSixHours.IsChecked)
+            {
+                BASE_SHIFT_TIME = 6;
+            }
+            else
+            {
+                BASE_SHIFT_TIME = 8.48;
+            }
+            CalculateTimeToLeave();
         }
     }
 }
