@@ -16,5 +16,4 @@ D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignColors.pdb
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignThemes.Wpf.pdb
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\bin\Release\MaterialDesignThemes.Wpf.xml
-D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.csprojAssemblyReference.cache
 D:\Users\Vinicius\Área de Trabalho\ClockInNotifier\ClockInNotifier\obj\Release\ClockInNotifier.csproj.CopyComplete
