@@ -100,7 +100,8 @@
                         <GridViewColumn Width="50" Header="Remove" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image VerticalAlignment="Center" PreviewMouseLeftButtonUp="RemoveRegistry" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" />
+                                    <!--Image VerticalAlignment="Center" PreviewMouseLeftButtonUp="RemoveRegistry" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" /-->
+                                    <materialDesign:PackIcon PreviewMouseLeftButtonUp="RemoveRegistry" Kind="RemoveCircle" Height="25" Width="25" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -108,9 +109,9 @@
                 </ListView.View>
             </ListView>
 
-            <StackPanel Margin="30, 100, 515, 220">
+            <StackPanel Margin="19,161,526,211">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBlock FontSize="20" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
+                    <TextBlock FontSize="20" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
                 <TextBlock FontFamily="Lucida Sans" >Shift time: </TextBlock>
                     
                 <!--TextBlock FontFamily="Lucida Sans" Text="{Binding BaseShiftTime}"></-->
@@ -145,6 +146,7 @@
                 <materialDesign:PackIcon Kind="ArrowDownThick" Height="25" Width="25" />
             </Button>
             <Button Content="Reset" Height="40" Width="100" HorizontalAlignment="Left" Margin="535,152,0,0"  VerticalAlignment="Top" Click="ResetSettings" FontFamily="Lucida Sans" />
+            <CheckBox IsChecked="True" Name="BaseLunchTime" Content="Consider Lunch Time as 1h" FontFamily="Lucida Sans" VerticalContentAlignment="Bottom" Checked="AddLunchTime" Unchecked="AddLunchTime" HorizontalAlignment="Left" Margin="66,118,0,0" VerticalAlignment="Top"/>
 
         </Grid>
     </Grid>

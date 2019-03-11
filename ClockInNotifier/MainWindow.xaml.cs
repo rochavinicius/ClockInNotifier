@@ -12,6 +12,7 @@ namespace ClockInNotifier
     public partial class MainWindow : Window
     {
         private Double BASE_SHIFT_TIME = 6;
+        private Double BASE_LUNCH_TIME = 1;
 
         private DataComponent dataComponent;
         private System.Windows.Forms.NotifyIcon notifyIcon;
@@ -35,8 +36,6 @@ namespace ClockInNotifier
 
         public MainWindow()
         {
-            InitializeComponent();
-
             this.close = false;
 
             this.contextMenu = new System.Windows.Forms.ContextMenu();
@@ -64,19 +63,17 @@ namespace ClockInNotifier
             };
 
             DataContext = dataComponent;
+
+            InitializeComponent();
         }
 
         private void CalculateTimeToLeave()
         {
-            if (this.ListView.Items.Count == 0)
-            {
-                this.dataComponent.EndShiftTime = String.Empty;
-            }
-            else if (this.ListView.Items.Count == 1 || this.ListView.Items.Count == 2)
+            if (this.ListView.Items.Count == 1 || this.ListView.Items.Count == 2)
             {
                 var entryTime =
                     DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
-                this.dataComponent.EndShiftTime = entryTime.AddHours(BASE_SHIFT_TIME).ToShortTimeString();
+                this.dataComponent.EndShiftTime = entryTime.AddHours(BASE_SHIFT_TIME + BASE_LUNCH_TIME).ToShortTimeString();
             }
             else if (this.ListView.Items.Count == 3)
             {
@@ -95,7 +92,7 @@ namespace ClockInNotifier
             }
         }
 
-        #region Form Buttons Events
+        #region Form Events
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DateTime dt = DateTime.Parse(dataComponent.HourDisplay);
@@ -175,9 +172,46 @@ namespace ClockInNotifier
             this.fiveMinNotificationLunchShowed = false;
             this.oneMinNotificationLunchShowed = false;
 
+            this.BASE_LUNCH_TIME = 1;
+            BaseLunchTime.IsChecked = true;
+
             //this.DataGridList.Items.Clear();
             ListView.Items.Clear();
             this.dataComponent.EndShiftTime = String.Empty;
+        }
+
+        private void BtnQuit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void UpdateShiftTime(object sender, RoutedEventArgs e)
+        {
+            if ((bool)BtnSixHours.IsChecked)
+            {
+                BASE_SHIFT_TIME = 6;
+            }
+            else
+            {
+                BASE_SHIFT_TIME = 8.48;
+            }
+            CalculateTimeToLeave();
+        }
+
+        private void AddLunchTime(object sender, RoutedEventArgs e)
+        {
+            BASE_LUNCH_TIME = (bool)BaseLunchTime.IsChecked ? 1 : 0;
+            this.CalculateTimeToLeave();
         }
         #endregion
 
@@ -292,7 +326,6 @@ namespace ClockInNotifier
             this.timer.IsEnabled = true;
         }
 
-
         #region Async Thread That Runs The Notification
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -335,7 +368,7 @@ namespace ClockInNotifier
             else if (this.ListView.Items.Count == 1)
             {
                 var firstPoint = DateTime.Parse((this.ListView.Items[0] as DataComponent).HourDisplay);
-                var diff = firstPoint.AddHours(BASE_SHIFT_TIME).Subtract(dt).TotalMinutes;
+                var diff = firstPoint.AddHours(BASE_SHIFT_TIME + BASE_LUNCH_TIME).Subtract(dt).TotalMinutes;
 
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
                 {
@@ -401,32 +434,5 @@ namespace ClockInNotifier
         }
         #endregion
 
-        private void BtnQuit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
-
-        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        private void UpdateShiftTime(object sender, RoutedEventArgs e)
-        {
-            if ((bool)BtnSixHours.IsChecked)
-            {
-                BASE_SHIFT_TIME = 6;
-            }
-            else
-            {
-                BASE_SHIFT_TIME = 8.48;
-            }
-            CalculateTimeToLeave();
-        }
     }
 }
