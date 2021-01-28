@@ -30,124 +30,80 @@
             </Grid>
         </StackPanel>
 
-        <Grid>
-            <!--
-            <DataGrid HeadersVisibility="Column" CanUserResizeRows="False" CanUserResizeColumns="False" SelectionMode="Single" x:Name="DataGridList" HorizontalAlignment="Left" Height="200" Margin="280,200,0,0" VerticalAlignment="Top" Width="250">
+        <Border BorderThickness="2 0 2 2" BorderBrush="DodgerBlue">
+            <Grid>
+                <ListView Background="Transparent" BorderThickness="1" Name="ListView" HorizontalAlignment="Left" Height="200" Margin="315,220,0,0" VerticalAlignment="Top" Width="160">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="IsHitTestVisible" Value="False"/>
+                                    <Setter Property="FontFamily" Value="Lucida Sans" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Width="100" Header="Hour" DisplayMemberBinding="{Binding HourDisplay}" />
+                            <GridViewColumn Width="50" Header="Remove" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!--Image VerticalAlignment="Center" PreviewMouseLeftButtonUp="RemoveRegistry" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" /-->
+                                        <materialDesign:PackIcon PreviewMouseLeftButtonUp="RemoveRegistry" Kind="RemoveCircle" Height="25" Width="25" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
 
-                 Table Styles
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Background" Value="Aquamarine" />
-                        <Setter Property="FontWeight" Value="SemiBold" />
-                        <Setter Property="BorderThickness" Value="0,0,1,2" />
-                        <Setter Property="BorderBrush" Value="Black" />
-                    </Style>
-                    <Style TargetType="{x:Type DataGridCell}">
-                        <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                        <Style.Triggers>
-                            <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-
-                </DataGrid.Resources>
-
-                 Table Column Headers
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Hour" Width="*" IsReadOnly="True" CanUserResize="False" CanUserReorder="False" Binding="{Binding HourDisplay}" />
-                    <DataGridTemplateColumn Header="Image" Width="*" IsReadOnly="True" CanUserResize="False" CanUserReorder="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image PreviewMouseLeftButtonUp="RemoveRegistry"  RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Triggers>
-                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                                        <Setter Property="Background" Value="Transparent"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-
-            </DataGrid>
-            -->
-            <ListView Background="Transparent" BorderThickness="0" Name="ListView" HorizontalAlignment="Left" Height="200" Margin="315,220,0,0" VerticalAlignment="Top" Width="160">
-                <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridView.ColumnHeaderContainerStyle>
-                            <Style TargetType="{x:Type GridViewColumnHeader}">
-                                <Setter Property="IsHitTestVisible" Value="False"/>
-                                <Setter Property="FontFamily" Value="Lucida Sans" />
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="HorizontalAlignment" Value="Left" />
-                            </Style>
-                        </GridView.ColumnHeaderContainerStyle>
-                        <GridViewColumn Width="100" Header="Hour" DisplayMemberBinding="{Binding HourDisplay}" />
-                        <GridViewColumn Width="50" Header="Remove" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <!--Image VerticalAlignment="Center" PreviewMouseLeftButtonUp="RemoveRegistry" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Width="30" Height="30" Source="{Binding Image}" /-->
-                                    <materialDesign:PackIcon PreviewMouseLeftButtonUp="RemoveRegistry" Kind="RemoveCircle" Height="25" Width="25" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
-            <StackPanel Margin="19,161,526,211">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock FontSize="20" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
+                <StackPanel Margin="19,161,526,211">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBlock FontSize="20" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontStretch="Expanded" x:Name="baseShiftTime" >
                 <TextBlock FontFamily="Lucida Sans" >Shift time: </TextBlock>
-                    
-                <!--TextBlock FontFamily="Lucida Sans" Text="{Binding BaseShiftTime}"></-->
+            
+                </TextBlock>
+                        <ComboBox x:Name="cbShiftTime" HorizontalAlignment="Left" Margin="10px 0px" VerticalAlignment="Bottom" Width="100" SelectionChanged="UpdateShiftTime" FontFamily="Lucida Sans" FontSize="14">
+                            <ComboBoxItem Content="6h" FontFamily="Lucida Sans" IsSelected="True" FontSize="14"/>
+                            <ComboBoxItem Content="8h" FontFamily="Lucida Sans" FontSize="14"/>
+                            <ComboBoxItem Content="8h48" FontFamily="Lucida Sans" FontSize="14"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock FontSize="20" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="endShiftTimeTextBlock">
+                <TextBlock FontFamily="Lucida Sans" Margin="0 10 0 0">Time to leave:  </TextBlock>
+                <TextBlock FontFamily="Lucida Sans" Margin="0 10 0 0" Text="{Binding EndShiftTime}"></TextBlock>
             </TextBlock>
-                    <RadioButton FontSize="16" FontWeight="Bold" Name="BtnSixHours" GroupName="Shift" IsChecked="True" Content="6h" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateShiftTime" />
-                    <RadioButton FontSize="16" FontWeight="Bold" Name="BtnEightHours" GroupName="Shift" Content="8h48min" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateShiftTime" />
                 </StackPanel>
-                <TextBlock FontSize="20" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Stretch" VerticalAlignment="Top" x:Name="endShiftTimeTextBlock">
-                <TextBlock FontFamily="Lucida Sans">Time to leave:  </TextBlock>
-                <TextBlock FontFamily="Lucida Sans" Text="{Binding EndShiftTime}"></TextBlock>
-            </TextBlock>
-            </StackPanel>
 
-            <StackPanel Margin="350, 130, 350, 260">
-                <TextBlock Text="{Binding HourDisplay}" FontSize="18" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="HourTextBlock" Height="31" FontFamily="Lucida Sans" />
-            </StackPanel>
+                <StackPanel Margin="350, 130, 350, 260">
+                    <TextBlock Text="{Binding HourDisplay}" FontSize="18" TextAlignment="Center" FontStretch="Expanded" FontWeight="ExtraBold" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="HourTextBlock" Height="31" FontFamily="Lucida Sans" />
+                </StackPanel>
 
-            <Button Content="Add Registry" HorizontalAlignment="Left" Margin="535,105,0,0" VerticalAlignment="Top" Height="40" Width="100" Click="AddHourRestry" FontFamily="Lucida Sans"/>
-            <Button Margin="406,64,356,355" Background="{x:Null}" BorderBrush="{x:Null}">
-            </Button>
-            <Button x:Uid="UpMinute" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="406,100,0,0" VerticalAlignment="Top" Width="38" Height="30" Click="Button_Click" >
-                <materialDesign:PackIcon Kind="ArrowUpThick" Height="25" Width="25" />
-            </Button>
-            <Button x:Uid="DownMinute" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="406,161,0,0" VerticalAlignment="Top" Width="38" Height="31" Click="Button_Click">
-                <materialDesign:PackIcon Kind="ArrowDownThick" Height="25" Width="25" />
-            </Button>
+                <Button Content="Add Registry" HorizontalAlignment="Left" Margin="535,105,0,0" VerticalAlignment="Top" Height="40" Width="100" Click="AddHourRestry" FontFamily="Lucida Sans"/>
+                <Button Margin="406,64,356,355" Background="{x:Null}" BorderBrush="{x:Null}">
+                </Button>
+                <Button x:Uid="UpMinute" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="406,100,0,0" VerticalAlignment="Top" Width="38" Height="30" Click="UpdateTime" >
+                    <materialDesign:PackIcon Kind="ArrowUpThick" Height="25" Width="25" />
+                </Button>
+                <Button x:Uid="DownMinute" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="406,161,0,0" VerticalAlignment="Top" Width="38" Height="31" Click="UpdateTime">
+                    <materialDesign:PackIcon Kind="ArrowDownThick" Height="25" Width="25" />
+                </Button>
 
-            <Button x:Uid="UpHour" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="350,100,0,0" VerticalAlignment="Top" Width="38" Height="30" Click="Button_Click">
-                <materialDesign:PackIcon Kind="ArrowUpThick" Height="25" Width="25" />
-            </Button>
-            <Button x:Uid="DownHour" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="350,161,0,0" VerticalAlignment="Top" Width="38" Height="31" Click="Button_Click">
-                <materialDesign:PackIcon Kind="ArrowDownThick" Height="25" Width="25" />
-            </Button>
-            <Button Content="Reset" Height="40" Width="100" HorizontalAlignment="Left" Margin="535,152,0,0"  VerticalAlignment="Top" Click="ResetSettings" FontFamily="Lucida Sans" />
-            <CheckBox IsChecked="True" Name="BaseLunchTime" Content="Consider Lunch Time as 1h" FontFamily="Lucida Sans" VerticalContentAlignment="Bottom" Checked="AddLunchTime" Unchecked="AddLunchTime" HorizontalAlignment="Left" Margin="66,118,0,0" VerticalAlignment="Top"/>
+                <Button x:Uid="UpHour" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="350,100,0,0" VerticalAlignment="Top" Width="38" Height="30" Click="UpdateTime">
+                    <materialDesign:PackIcon Kind="ArrowUpThick" Height="25" Width="25" />
+                </Button>
+                <Button x:Uid="DownHour" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="350,161,0,0" VerticalAlignment="Top" Width="38" Height="31" Click="UpdateTime">
+                    <materialDesign:PackIcon Kind="ArrowDownThick" Height="25" Width="25" />
+                </Button>
+                <Button Content="Reset" Height="40" Width="100" HorizontalAlignment="Left" Margin="535,152,0,0"  VerticalAlignment="Top" Click="ResetSettings" FontFamily="Lucida Sans" />
+                <CheckBox IsChecked="True" Name="BaseLunchTime" Content="Consider Lunch Time as 1h" FontFamily="Lucida Sans" VerticalContentAlignment="Bottom" Checked="AddLunchTime" Unchecked="AddLunchTime" HorizontalAlignment="Left" Margin="66,118,0,0" VerticalAlignment="Top"/>
+                <Button Content="Now" HorizontalAlignment="Left" Margin="348,64,0,0" VerticalAlignment="Top" Height="20" Width="100" FontFamily="Lucida Sans" Click="UpdateTimeNow"/>
 
-        </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

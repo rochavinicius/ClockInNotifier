@@ -11,22 +11,22 @@ namespace ClockInNotifier
 {
     class DataComponent : INotifyPropertyChanged
     {
-        private String endShiftTime;
-        public String EndShiftTime
+        private string endShiftTime;
+        public string EndShiftTime
         {
             get
             {
-                return this.endShiftTime;
+                return endShiftTime;
             }
             set
             {
-                this.endShiftTime = value;
+                endShiftTime = value;
                 OnPropertyChanged();
             }
         }
 
-        private String hourDisplay;
-        public String HourDisplay
+        private string hourDisplay;
+        public string HourDisplay
         {
             get
             {
@@ -39,14 +39,14 @@ namespace ClockInNotifier
             }
         }
 
-        public Bitmap bitmap { get; set; }
+        public Bitmap Bitmap { get; set; }
 
         public ImageSource Image
         {
             get
             {
                 return Imaging.CreateBitmapSourceFromHBitmap(
-                        bitmap.GetHbitmap(),
+                        Bitmap.GetHbitmap(),
                         IntPtr.Zero,
                         Int32Rect.Empty,
                         BitmapSizeOptions.FromEmptyOptions()
@@ -57,10 +57,7 @@ namespace ClockInNotifier
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
