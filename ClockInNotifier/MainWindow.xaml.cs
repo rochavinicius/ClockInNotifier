@@ -56,7 +56,7 @@ namespace ClockInNotifier
                 Icon = Properties.Resources.ClockIcon,
                 Text = "Clock In Notifier",
                 ContextMenu = contextMenu,
-                Visible = true
+                Visible = false
             };
             notifyIcon.MouseDoubleClick += new MouseEventHandler(OnNotifyIconClick);
             notifyIcon.BalloonTipClicked += new EventHandler(OnBalloonTipClick);
@@ -296,6 +296,7 @@ namespace ClockInNotifier
             {
                 dataComponent.HourDisplay = DateTime.Now.ToShortTimeString();
                 WindowState = WindowState.Normal;
+                notifyIcon.Visible = false;
                 Show();
             }
         }
@@ -314,6 +315,7 @@ namespace ClockInNotifier
         private void OnQuitClick(object sender, EventArgs e)
         {
             close = true;
+            notifyIcon.Visible = false;
             Close();
         }
 
@@ -322,6 +324,7 @@ namespace ClockInNotifier
             if (!close)
             {
                 e.Cancel = true;
+                notifyIcon.Visible = true;
                 notifyIcon.BalloonTipText = "Clock In Notifier is still running in background.";
                 notifyIcon.ShowBalloonTip(1000);
                 Hide();
