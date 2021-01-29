@@ -418,7 +418,7 @@ namespace ClockInNotifier
 
                 var thirdPoint = DateTime.Parse((ListView.Items[2] as DataComponent).HourDisplay);
 
-                var diff = thirdPoint.AddMinutes(360 - minutesDone)
+                var diff = thirdPoint.AddMinutes((BASE_SHIFT_TIME * 60) - minutesDone)
                                     .Subtract(dt)
                                     .TotalMinutes;
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
