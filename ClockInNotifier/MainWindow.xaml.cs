@@ -352,7 +352,7 @@ namespace ClockInNotifier
             if (ListView.Items.Count == 2)
             {
                 var time = DateTime.Parse((ListView.Items[1] as DataComponent).HourDisplay);
-                var diff = dt.Subtract(time).TotalMinutes;
+                var diff = time.AddHours(1).Subtract(dt).TotalMinutes;
 
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationLunchShowed)
                 {
