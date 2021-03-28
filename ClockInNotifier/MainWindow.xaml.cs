@@ -14,6 +14,8 @@ namespace ClockInNotifier
         private Double BASE_SHIFT_TIME = 6;
         private Double BASE_LUNCH_TIME = 1;
 
+        private DateTime displayDate;
+
         private readonly DataComponent dataComponent;
         private readonly NotifyIcon notifyIcon;
         private readonly ContextMenu contextMenu;
@@ -61,24 +63,25 @@ namespace ClockInNotifier
             notifyIcon.MouseDoubleClick += new MouseEventHandler(OnNotifyIconClick);
             notifyIcon.BalloonTipClicked += new EventHandler(OnBalloonTipClick);
 
-            BASE_SHIFT_TIME = 6;
-
+            displayDate = DateTime.Now;
             dataComponent = new DataComponent()
             {
-                HourDisplay = DateTime.Now.ToShortTimeString()
+                HourDisplay = displayDate.ToShortTimeString()
             };
 
             DataContext = dataComponent;
 
             InitializeComponent();
+
+            cbShiftTime.SelectedIndex = 1;
+            UpdateShiftTime(null, null);
         }
 
         private void CalculateTimeToLeave()
         {
             if (ListView.Items.Count == 1 || ListView.Items.Count == 2)
             {
-                var entryTime =
-                    DateTime.Parse((ListView.Items[0] as DataComponent).HourDisplay);
+                var entryTime = DateTime.Parse((ListView.Items[0] as DataComponent).HourDisplay);
                 dataComponent.EndShiftTime = entryTime.AddHours(BASE_SHIFT_TIME + BASE_LUNCH_TIME).ToShortTimeString();
             }
             else if (ListView.Items.Count == 3)
@@ -101,26 +104,25 @@ namespace ClockInNotifier
         #region Form Events
         private void UpdateTime(object sender, RoutedEventArgs e)
         {
-            DateTime dt = DateTime.Parse(dataComponent.HourDisplay);
             string uid = ((System.Windows.Controls.Button)e.Source).Uid;
 
             switch (uid.ToUpper())
             {
                 case "UPHOUR":
-                    dt = dt.AddHours(1);
+                    displayDate = displayDate.AddHours(1);
                     break;
                 case "UPMINUTE":
-                    dt = dt.AddMinutes(1);
+                    displayDate = displayDate.AddMinutes(1);
                     break;
                 case "DOWNHOUR":
-                    dt = dt.AddHours(-1);
+                    displayDate = displayDate.AddHours(-1);
                     break;
                 case "DOWNMINUTE":
-                    dt = dt.AddMinutes(-1);
+                    displayDate = displayDate.AddMinutes(1);
                     break;
             }
 
-            dataComponent.HourDisplay = dt.ToShortTimeString();
+            dataComponent.HourDisplay = displayDate.ToShortTimeString();
         }
 
         private void AddHourRestry(object sender, RoutedEventArgs e)
@@ -214,6 +216,11 @@ namespace ClockInNotifier
 
         private void BtnQuit_Click(object sender, RoutedEventArgs e)
         {
+            ExitList.Visibility = ExitList.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        private void BtnClose_Click(Object sender, RoutedEventArgs e)
+        {
             Close();
         }
 
@@ -253,7 +260,8 @@ namespace ClockInNotifier
 
         private void UpdateTimeNow(object sender, RoutedEventArgs e)
         {
-            dataComponent.HourDisplay = DateTime.Now.ToShortTimeString();
+            displayDate = DateTime.Now;
+            dataComponent.HourDisplay = displayDate.ToShortTimeString();
         }
         #endregion
 
@@ -269,17 +277,11 @@ namespace ClockInNotifier
             {
                 var lastItemIndex = ListView.Items.Count - 1;
                 var item1 = DateTime.Parse((ListView.Items[lastItemIndex] as DataComponent).HourDisplay);
-                var newItem = DateTime.Parse(HourTextBlock.Text);
-                if (item1 == newItem || item1 > newItem)
+                if (item1 == displayDate || item1 > displayDate)
                 {
                     invalidErrorMessage = "You can't add a register that is equal or smaller than the previous register.";
                     return false;
                 }
-            }
-            if (DateTime.Parse(HourTextBlock.Text) > DateTime.Now)
-            {
-                invalidErrorMessage = "You can't add a register from the future.";
-                return false;
             }
             return true;
         }

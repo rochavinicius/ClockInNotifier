@@ -20,14 +20,69 @@
             <Grid Margin="5">
                 <TextBlock Text="Clock In Notifier" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="Lucida Sans" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="BtnMinimize" Width="30" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Click="BtnMinimize_Click">
+                    <Button x:Name="BtnMinimize" Width="30" Height="30" Background="Transparent" BorderBrush="{x:Null}" Padding="0" Click="BtnMinimize_Click">
                         <materialDesign:PackIcon Kind="WindowMinimize" />
                     </Button>
-                    <Button x:Name="BtnQuit" Width="30" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Click="BtnQuit_Click">
+                    <Button x:Name="BtnQuit" Width="30" Height="30" Background="Transparent" BorderBrush="{x:Null}" Padding="0" Click="BtnQuit_Click">
                         <materialDesign:PackIcon Kind="Power" />
                     </Button>
                 </StackPanel>
             </Grid>
+
+            <Grid x:Name="ExitList" Height="50" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 20 0" Visibility="Hidden">
+                <StackPanel>
+                    <Border Background="Black" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0 0 0 1">
+                        <Button Content="Close" Click="BtnClose_Click" FontFamily="Lucida Sans" Height="20" Width="100">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="DodgerBlue" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Black" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Border>
+
+                    <Border Background="Black" BorderBrush="DodgerBlue" BorderThickness="1">
+                        <Button Content="Exit" Click="OnQuitClick" FontFamily="Lucida Sans" Height="20" Width="100">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="DodgerBlue" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Black" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
         </StackPanel>
 
         <Border BorderThickness="2 0 2 2" BorderBrush="DodgerBlue">
