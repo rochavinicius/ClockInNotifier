@@ -118,7 +118,7 @@ namespace ClockInNotifier
                     displayDate = displayDate.AddHours(-1);
                     break;
                 case "DOWNMINUTE":
-                    displayDate = displayDate.AddMinutes(1);
+                    displayDate = displayDate.AddMinutes(-1);
                     break;
             }
 
