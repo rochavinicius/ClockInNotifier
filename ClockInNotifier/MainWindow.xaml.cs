@@ -141,8 +141,7 @@ namespace ClockInNotifier
 
             var newItem = new DataComponent()
             {
-                HourDisplay = HourTextBlock.Text,
-                Bitmap = Properties.Resources.DeleteIcon
+                HourDisplay = HourTextBlock.Text
             };
 
             ListView.Items.Add(newItem);
