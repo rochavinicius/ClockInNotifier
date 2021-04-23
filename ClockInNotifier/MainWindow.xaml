@@ -57,7 +57,7 @@
                     </Border>
 
                     <Border Background="Black" BorderBrush="DodgerBlue" BorderThickness="1">
-                        <Button Content="Exit" Click="OnQuitClick" FontFamily="Lucida Sans" Height="20" Width="100">
+                        <Button Content="Exit" Click="BtnExit_Click" FontFamily="Lucida Sans" Height="20" Width="100">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Setter Property="Background" Value="White" />

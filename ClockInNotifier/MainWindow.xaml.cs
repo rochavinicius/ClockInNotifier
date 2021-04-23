@@ -223,6 +223,23 @@ namespace ClockInNotifier
             Close();
         }
 
+        private void BtnExit_Click(Object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show
+            (
+                "Are you sure you want to exit?",
+                "Exit",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                OnQuitClick(sender, e);
+            }
+        }
+
         private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             DragMove();
