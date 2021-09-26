@@ -366,6 +366,7 @@ namespace ClockInNotifier
         private void Timer_Tick(object sender, EventArgs e)
         {
             DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
+            bool notifiIconVisible = notifyIcon.Visible;
 
             if (ListView.Items.Count == 2)
             {
@@ -375,30 +376,42 @@ namespace ClockInNotifier
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationLunchShowed)
                 {
                     fifteenMinNotificationLunchShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "15 minutes to register back from lunch.";
                     notifyIcon.BalloonTipTitle = "Register your point";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 10 && diff > 5 && !tenMinNotificationLunchShowed)
                 {
                     tenMinNotificationLunchShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "10 minutes to register back from lunch.";
                     notifyIcon.BalloonTipTitle = "Register your point";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 5 && diff > 1 && !fiveMinNotificationLunchShowed)
                 {
                     fiveMinNotificationLunchShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "5 minutes to register back from lunch.";
                     notifyIcon.BalloonTipTitle = "Register your point";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 1 && diff > 0 && !oneMinNotificationLunchShowed)
                 {
                     oneMinNotificationLunchShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipTitle = "Register your point";
                     notifyIcon.BalloonTipText = "1 minute to register back from lunch.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
             }
             else if (ListView.Items.Count == 1)
@@ -409,26 +422,38 @@ namespace ClockInNotifier
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
                 {
                     fifteenMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "15 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 10 && diff > 5 && !tenMinNotificationEndShowed)
                 {
                     tenMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "10 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 5 && diff > 1 && !fiveMinNotificationEndShowed)
                 {
                     fiveMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 1 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     oneMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "1 minute to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
             }
             else if (ListView.Items.Count == 3)
@@ -445,26 +470,38 @@ namespace ClockInNotifier
                 if (diff <= 15 && diff > 10 && !fifteenMinNotificationEndShowed)
                 {
                     fifteenMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "15 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 10 && diff > 5 && !tenMinNotificationEndShowed)
                 {
                     tenMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "10 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 5 && diff > 1 && !fiveMinNotificationEndShowed)
                 {
                     fiveMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "5 minutes to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
                 else if (diff <= 1 && diff > 0 && !oneMinNotificationEndShowed)
                 {
                     oneMinNotificationEndShowed = true;
+                    notifyIcon.Visible = true;
                     notifyIcon.BalloonTipText = "1 minute to register end of journey.";
                     notifyIcon.ShowBalloonTip(1000);
+                    if (!notifiIconVisible)
+                        notifyIcon.Visible = false;
                 }
             }
         }
